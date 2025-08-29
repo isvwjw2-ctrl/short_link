@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跳转中</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .pulse-slow {
+                animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="text-center p-6 max-w-md w-full mx-auto bg-white rounded-xl shadow-lg">
+        <!-- 加载动画 -->
+        <div class="flex justify-center mb-6">
+            <i class="fa fa-circle-o-notch fa-spin text-primary text-4xl pulse-slow"></i>
+        </div>
+        
+        <!-- 标题和信息 -->
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">跳转中</h1>
+        <p class="text-gray-600 mb-4" id="targetInfo">1秒后将跳转到目标网站...</p>
+        <p class="text-gray-500 text-sm">如果您没有自动跳转，请点击下方链接</p>
+        
+        <!-- 跳转链接 -->
+        <a href="#" id="redirectLink" class="inline-block mt-4 text-primary hover:text-primary/80 font-medium transition-colors">
+            立即前往 <i class="fa fa-arrow-right ml-1"></i>
+        </a>
+    </div>
+
+    <script>
+        // 从URL获取target参数
+        function getTargetUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('target');
+        }
+        
+        // 主逻辑
+        document.addEventListener('DOMContentLoaded', () => {
+            const targetUrl = getTargetUrl();
+            const redirectLink = document.getElementById('redirectLink');
+            const targetInfo = document.getElementById('targetInfo');
+            
+            if (targetUrl) {
+                // 显示目标URL信息
+                let displayUrl = targetUrl;
+                if (displayUrl.length > 30) {
+                    displayUrl = displayUrl.substring(0, 30) + '...';
+                }
+                targetInfo.textContent = `1秒后将跳转到: ${displayUrl}`;
+                
+                // 设置手动跳转链接
+                redirectLink.href = targetUrl;
+                
+                // 1秒后自动跳转
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 1000);
+            } else {
+                // 如果没有目标参数，显示错误信息
+                targetInfo.textContent = '未指定目标网址';
+                redirectLink.textContent = '返回首页';
+                redirectLink.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>

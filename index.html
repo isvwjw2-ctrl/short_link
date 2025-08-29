@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正在跳转</title>
+</head>
+<body>
+    <script>
+        // 从URL获取target参数
+        function getTargetParam() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('target');
+        }
+        
+        // 获取目标URL参数
+        const targetUrl = getTargetParam();
+        
+        if (targetUrl) {
+            // 如果有target参数，跳转到/b路径并携带参数
+            window.location.href = `/b?target=${encodeURIComponent(targetUrl)}`;
+        } else {
+            // 如果没有参数，默认跳转到/b
+            window.location.href = '/b';
+        }
+    </script>
+</body>
+</html>
